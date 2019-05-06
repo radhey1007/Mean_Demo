@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-product-add',
@@ -12,6 +11,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProductAddComponent implements OnInit {
 
   angForm:FormGroup;
+  
+
+
   constructor(public fb : FormBuilder,public productService:ProductService,private route: ActivatedRoute,private router: Router) {
     this.createForm();
    }
@@ -22,12 +24,18 @@ export class ProductAddComponent implements OnInit {
       productName:['',Validators.required],
       productId:['',Validators.required]
     });
+
+    this.addCategory();
+
   } 
 
   ngOnInit() {
   }
 
+ 
   addProduct(brandName, productName, productId) {
+
+    console.table(this.angForm.value);
 
     this.productService.addProduct(brandName, productName, productId).subscribe((res:any)=> {
       console.log(res);
